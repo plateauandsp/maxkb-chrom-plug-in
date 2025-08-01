@@ -33,11 +33,17 @@ MaxKB 浏览器插件是基于MaxKB 企业级智能体平台为用户打造的�
 
 ### 1. 安装配置
 
-1. 下载插件，开发者模式下安装安装插件
-2. 打开配置页面配置 MaxKB 应用信息：
+1. 下载插件（本仓库直接下载代码zip）
+<img width="1365" height="537" alt="image" src="https://github.com/user-attachments/assets/5887902d-87bb-46b0-b102-7030e636901a" />
+
+2.解压zip包，Chrom 浏览器开发者模式下安装插件
+<img width="856" height="506" alt="image" src="https://github.com/user-attachments/assets/c0066564-829f-4e17-aa6e-a3bb1b1c1684" />
+
+3. 打开配置页面配置 MaxKB 应用信息：
    - MaxKB 地址（HTTPS）
    - API 密钥（可在 MaxKB 应用管理中获取）
-3. 支持配置多个应用
+
+4. 配置多个应用(可选)
 <img width="480" height="448" alt="image" src="https://github.com/user-attachments/assets/69ea3e3f-aa7c-43bc-8680-ed852285a49d" />
 
 ### 2. 基础使用
@@ -51,7 +57,9 @@ MaxKB 浏览器插件是基于MaxKB 企业级智能体平台为用户打造的�
    - 使用复制/下载按钮保存结果
    - 点击关闭按钮结束会话
 <img width="1318" height="912" alt="image" src="https://github.com/user-attachments/assets/7fdc8bb0-819f-4e2d-9bdb-0bdde759d8bc" />
+
 4.支持交互内容动态叠加（基于时间），支持多应用多开动态交互弹窗
+
 ### 3. 高级功能
 
 - **中断响应**：点击关闭按钮可随时终止处理
