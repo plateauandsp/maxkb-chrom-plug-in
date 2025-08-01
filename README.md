@@ -44,7 +44,8 @@ MaxKB 浏览器插件是基于MaxKB 企业级智能体平台为用户打造的�
 
 1. 在网页中选中任意文本
 2. 右键菜单选择 "MaxKB智能助手" ，选择具体的智能体应用
-<img width="3840" height="1080" alt="image" src="https://github.com/user-attachments/assets/cb2b93ed-2887-467c-9799-a42a9a268f3d" />
+<img width="1321" height="825" alt="image" src="https://github.com/user-attachments/assets/11242ce3-b84f-459d-aefd-ba964c09dee7" />
+
 3. 查看弹窗中的流式响应结果：
    - 实时滚动查看处理进度
    - 使用复制/下载按钮保存结果
