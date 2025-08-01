@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>MaxKB浏览器插件</title>
+  
+  <style>
+    :root {
+      --primary-color: #3b82f6;
+      --primary-dark: #2563eb;
+      --primary-light: #93c5fd;
+      --secondary-color: #64748b;
+      --success-color: #10b981;
+      --danger-color: #ef4444;
+      --warning-color: #f59e0b;
+      --background-color: #f1f5f9;
+      --card-bg: #ffffff;
+      --border-color: #e2e8f0;
+      --text-primary: #1e293b;
+      --text-secondary: #64748b;
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      --radius: 12px;
+      --radius-sm: 8px;
+      --transition: all 0.2s ease-in-out;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      width: 460px;
+      background-color: var(--background-color);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      color: var(--text-primary);
+      padding: 0;
+      margin: 0;
+    }
+    
+    /* 头部区域 */
+    .header {
+      background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+      color: white;
+      padding: 24px;
+      border-radius: 0 0 var(--radius) var(--radius);
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .header::before {
+      content: "";
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+      transform: rotate(30deg);
+    }
+    
+    .header-content {
+      position: relative;
+      z-index: 2;
+    }
+    
+    .header-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    
+    .header-icon {
+      font-size: 24px;
+    }
+    
+    .header-subtitle {
+      font-size: 13px;
+      opacity: 0.9;
+      font-weight: 400;
+    }
+    .header-subtitle a {
+      color: white;
+      text-decoration: underline;
+    }
+    /* 主容器 */
+    .container {
+      padding: 20px;
+      max-height: 100vh;
+      overflow-y: auto;
+    }
+    
+    /* 应用卡片 */
+    .app-card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      margin-bottom: 20px;
+      transition: var(--transition);
+      border: 1px solid var(--border-color);
+      overflow: hidden;
+    }
+    
+    .app-card:hover {
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-2px);
+    }
+    
+    .app-card-header {
+      padding: 16px 20px;
+      background: #f8fafc;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+    }
+    
+    .app-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+    
+    .app-title-input {
+      flex: 1;
+      border: none;
+      background: transparent;
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--primary-dark);
+      padding: 8px 12px;
+      border-radius: var(--radius-sm);
+      transition: var(--transition);
+    }
+    
+    .app-title-input:focus {
+      outline: none;
+      background: #f1f5f9;
+      box-shadow: 0 0 0 2px var(--primary-light);
+    }
+    
+    .app-title-input.is-invalid {
+      color: var(--danger-color);
+      background: #fef2f2;
+    }
+    
+    .app-card-actions {
+      display: flex;
+      gap: 8px;
+    }
+    
+    .action-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      border: none;
+      background: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: var(--transition);
+      color: var(--secondary-color);
+      font-size: 16px;
+      position: relative;
+    }
+    
+    .action-btn:hover {
+      background: #e2e8f0;
+      color: var(--primary-color);
+      transform: scale(1.05);
+    }
+    
+    .delete-btn {
+      color: #f87171; /* 更红的默认颜色 */
+    }
+    
+    .delete-btn:hover {
+      background: #fee2e2;
+      color: var(--danger-color);
+      transform: scale(1.05);
+    }
+    
+    .delete-btn:hover::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      left: -100px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.8);
+      color: white;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      white-space: nowrap;
+      z-index: 100;
+    }
+    
+    .app-card-content {
+      padding: 0 20px 24px;
+      display: none;
+    }
+    
+    .app-card.expanded .app-card-content {
+      display: block;
+      animation: slideDown 0.3s ease-out;
+    }
+    
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    /* 表单组 */
+    .form-group {
+      margin-bottom: 24px;
+      padding: 8px 0;
+    }
+    
+    .form-group:last-child {
+      margin-bottom: 0;
+    }
+    
+    .form-label {
+      display: block;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .form-input-wrapper {
+      position: relative;
+    }
+    
+    .form-icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--secondary-color);
+      font-size: 16px;
+      z-index: 2;
+    }
+    
+    .form-input {
+      width: 100%;
+      padding: 14px 14px 14px 44px;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      transition: var(--transition);
+      background: #f8fafc;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    }
+    
+    .form-input:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+      background: white;
+    }
+    
+    /* 底部按钮 */
+    .footer {
+      padding: 0 20px 20px;
+      display: flex;
+      gap: 12px;
+    }
+    
+    .btn {
+      flex: 1;
+      padding: 12px;
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border: none;
+    }
+    
+    .btn-outline {
+      background: white;
+      color: var(--primary-color);
+      border: 1px solid var(--border-color);
+    }
+    
+    .btn-outline:hover {
+      background: #f1f5f9;
+      border-color: var(--primary-light);
+    }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+      color: white;
+      box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3);
+    }
+    
+    .btn-primary:hover {
+      background: linear-gradient(135deg, var(--primary-dark), #1d4ed8);
+      box-shadow: 0 4px 8px rgba(59, 130, 246, 0.4);
+      transform: translateY(-1px);
+    }
+    
+    /* 帮助文本 */
+    .help-text {
+      text-align: center;
+      color: var(--text-secondary);
+      font-size: 12px;
+      padding: 0 20px 16px;
+      line-height: 1.5;
+    }
+    
+    /* Toast 提示 */
+    .toast {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: var(--success-color);
+      color: white;
+      padding: 12px 20px;
+      border-radius: var(--radius-sm);
+      box-shadow: var(--shadow-lg);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transform: translateX(120%);
+      transition: transform 0.3s ease-out;
+    }
+    
+    .toast.show {
+      transform: translateX(0);
+    }
+    
+    /* 滚动条样式 */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 3px;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+  </style>
+</head>
+<body>
+  <!-- 头部 -->
+  <div class="header">
+    <div class="header-content">
+      <h1 class="header-title">
+        <span class="header-icon">⚙️</span>
+        <span>MaxKB 浏览器插件</span>
+      </h1>
+      <p class="header-subtitle">配置你的 MaxKB 应用参数（适配MaxKB V2版本）</p>
+    </div>
+  </div>
+
+  <!-- 主容器 -->
+  <div class="container">
+    <div id="apps-list"></div>
+  </div>
+
+  <!-- 底部按钮 -->
+  <div class="footer">
+    <button id="add-app-btn" class="btn btn-outline">
+      <span>➕</span>
+      <span>添加应用</span>
+    </button>
+    <button id="save-all-btn" class="btn btn-primary">
+      <span>💾</span>
+      <span>保存配置</span>
+    </button>
+  </div>
+
+  <!-- 帮助文本 -->
+  <p class="help-text">版权所有 © 杭州飞致云信息科技有限公司</p>
+  
+  <script src="popup.js"></script>
+</body>
+</html>
